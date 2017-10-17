@@ -1,5 +1,7 @@
 # JsonapiRspec
 
+[![Build Status](https://travis-ci.org/midwire/jsonapi_rspec.svg?branch=master)](https://travis-ci.org/midwire/jsonapi_rspec)
+
 Match json:api formatted Rack::Response (or Rails controller response) to an instantiated object or ActiveRecord/ActiveModel object.
 
 This project started because I wanted to be able to easily compare a json:api response to a model in my Rails API controllers, across several projects. Finding myself copying the code between projects, I decided to stick it all in a gem.
