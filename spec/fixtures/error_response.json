@@ -1,0 +1,19 @@
+{
+  "errors":{
+    "id":"123",
+    "source":{
+      "pointer": "/data/attributes/name"
+    },
+    "detail": "must exist",
+    "status":"422",
+    "code":"bad-juju",
+    "title":"required attribute missing",
+    "links":{
+      "about":"http://test.host/required-attribute-missing"
+    }
+  },
+  "meta":{
+    "copyright":"Copyright 2017 Chris Blackburn",
+    "version":"v1"
+  }
+}

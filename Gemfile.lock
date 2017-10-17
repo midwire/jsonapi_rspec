@@ -15,7 +15,9 @@ GEM
     coderay (1.1.2)
     concurrent-ruby (1.0.5)
     diff-lcs (1.3)
+    docile (1.1.5)
     i18n (0.8.6)
+    json (2.1.0)
     method_source (0.8.2)
     minitest (5.10.3)
     pry (0.10.4)
@@ -39,6 +41,11 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.6.0)
     rspec-support (3.6.0)
+    simplecov (0.15.1)
+      docile (~> 1.1.0)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.2)
     slop (3.6.0)
     thread_safe (0.3.6)
     tzinfo (1.2.3)
@@ -48,12 +55,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.16.a)
+  bundler (~> 1.15.4)
   jsonapi_rspec!
   pry-nav (~> 0.2.4)
   rack
   rake (~> 10.0)
   rspec (~> 3.0)
+  simplecov
 
 BUNDLED WITH
    1.16.0.pre.3

@@ -1,0 +1,17 @@
+{
+  "datum":{
+    "id":"123",
+    "type":"tags",
+    "attributes":{
+      "string_attribute":"Wellness",
+      "datetime_attribute":"2017-10-13T19:33:54.000Z",
+      "links":{
+        "self":"http://test.host/api/v1/tag_types.123"
+      }
+    }
+  },
+  "meta":{
+    "copyright":"Copyright 2017 Chris Blackburn",
+    "version":"v1"
+  }
+}
