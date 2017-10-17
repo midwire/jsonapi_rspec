@@ -131,31 +131,4 @@ RSpec.describe 'be_jsonapi_response_for' do
       end.to_not raise_error
     end
   end
-
-  # it 'matches on data => id' do
-  #   tag.id = 999
-  #   expect do
-  #     expect(response).to be_jsonapi_response_for(tag)
-  #   end.to raise_error(RSpec::Expectations::ExpectationNotMetError, /model id/)
-  # end
-
-  # it 'matches on data => type' do
-  #   tag.type = 'Bogus'
-  #   expect do
-  #     expect(response).to be_jsonapi_response_for(Object.new)
-  #   end.to raise_error(RSpec::Expectations::ExpectationNotMetError, /data:type/)
-  # end
-
-  # it 'matches on data => attributes' do
-  #   tag.created_at = 1.year.ago
-  #   expect do
-  #     expect(response).to be_jsonapi_response_for(tag)
-  #   end.to raise_error(RSpec::Expectations::ExpectationNotMetError, /^Expected model/)
-  # end
-
-  # it 'matches on meta' do
-  #   expect do
-  #     expect(response).to be_jsonapi_response_for(tag)
-  #   end.to raise_error(RSpec::Expectations::ExpectationNotMetError, /^Expected model/)
-  # end
 end

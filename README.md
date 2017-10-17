@@ -5,9 +5,9 @@
 
 Match json:api formatted Rack::Response (or Rails controller response) to an instantiated object or ActiveRecord/ActiveModel object.
 
-This project started because I wanted to be able to easily compare a json:api response to a model in my Rails API controllers, across several projects. Finding myself copying the code between projects, I decided to stick it all in a gem.
+This project started because I wanted to be able to easily compare a json:api response to a model in my Rails API controllers, across several projects. Finding myself copying the code between projects, I decided to put it all in a gem.
 
-As such, it may not strictly suit your needs, but if you let me know I'll do my best to accommodate.
+As such, it may not strictly suit your needs, but if you let me know I'll do my best to accommodate, and [pull requests](https://github.com/midwire/jsonapi_rspec/pulls) are always welcome.
 
 ## Installation
 
@@ -76,19 +76,19 @@ It currently tests for required json:api sections and matching attributes for th
 
 ### Possible Failure Messages
 
-* 'Response is an error'
-* "Unexpected key in response: '#{key}'"
-* 'Expected response to match an object instance but it is an empty string'
-* "The 'data' section is missing or invalid"
-* "Expected data:type '#{data_type}' to match: '#{object_type}'"
-* "The 'meta' section is missing or invalid"
-* "The 'meta:version' is missing"
-* "The 'meta:copyright' is missing or invalid - regex: '/^Copyright.+\\d{4}/'"
-* "Fix 'match_attribute?' method to handle: '#{obj_val_class_name}'" - please file an issue if you get this one.
 * "Attribute: :#{attr_name} with a value of '#{json_val}'(#{json_val.class.name}) does not match object: '#{obj_val}'(#{obj_val.class.name})
 * "Expected '#{value}' to match object id: '#{object_id}'"
+* "Expected data:type '#{data_type}' to match: '#{object_type}'"
+* "Fix 'match_attribute?' method to handle: '#{obj_val_class_name}'" - [please file an issue](https://github.com/midwire/jsonapi_rspec/issues/new) if you get this one.
+* "The 'data' section is missing or invalid"
+* "The 'meta' section is missing or invalid"
+* "The 'meta:copyright' is missing or invalid - regex: '/^Copyright.+\\d{4}/'"
+* "The 'meta:version' is missing"
+* "Unexpected key in response: '#{key}'"
+* 'Expected response to match an object instance but it is an empty string'
+* 'Response is an error'
 
-See the specs for details.
+[See the specs](https://github.com/midwire/jsonapi_rspec/blob/develop/spec/lib/jsonapi_rspec/be_json_api_response_for_spec.rb) for more details.
 
 ### Configuration
 
