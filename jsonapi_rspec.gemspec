@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'Provides RSpec matchers for json:api related specs'
   spec.description   = spec.summary
-  spec.homepage      = 'TODO: Put your gem\'s website or public repo URL here.'
+  spec.homepage      = 'https://github.com/midwire/jsonapi_rspec'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
