@@ -1,5 +1,6 @@
 # JsonapiRspec
 
+[![Gem Version](https://badge.fury.io/rb/jsonapi_rspec.svg)](https://badge.fury.io/rb/jsonapi_rspec)
 [![Build Status](https://travis-ci.org/midwire/jsonapi_rspec.svg?branch=master)](https://travis-ci.org/midwire/jsonapi_rspec)
 
 Match json:api formatted Rack::Response (or Rails controller response) to an instantiated object or ActiveRecord/ActiveModel object.
