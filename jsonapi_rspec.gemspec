@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry-nav', '~> 0.2.4'
   spec.add_development_dependency 'rack'
   spec.add_development_dependency 'simplecov'
+  spec.add_development_dependency 'midwire_common', '~> 0.1'
 
   spec.add_dependency 'activesupport', '>= 4.2.8'
 end
