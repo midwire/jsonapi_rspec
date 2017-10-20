@@ -34,7 +34,7 @@ expect(response).to be_jsonapi_response_for(my_model)
 ```
 
 It currently tests for required json:api sections and matching attributes for the passed model instance.
-```json
+```
 {
   "jsonapi": "version 1.1",   // does not check
   "data":{                    // checks if exists and is a hash

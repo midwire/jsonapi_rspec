@@ -14,8 +14,9 @@ require 'active_support/all'
 # @author Chris Blackburn <87a1779b@opayq.com>
 #
 class BeJsonApiResponseFor
-  def initialize(object_instance)
+  def initialize(object_instance, plural_form = nil)
     @object_instance = object_instance
+    @plural_form = plural_form
   end
 
   def matches?(response)
@@ -91,7 +92,8 @@ class BeJsonApiResponseFor
   end
 
   def valid_type?(data_type)
-    object_type = @object_instance.class.name.underscore.dasherize.pluralize
+    object_type = @plural_form ||
+                  @object_instance.class.name.pluralize.underscore.dasherize
     unless data_type == object_type
       return set_failure_message("Expected data:type '#{data_type}' to match: '#{object_type}'")
     end
@@ -173,9 +175,9 @@ end
 # Usage:
 #   expect(response).to be_jsonapi_response_for(object_instance)
 #
-RSpec::Matchers.define :be_jsonapi_response_for do |object|
+RSpec::Matchers.define :be_jsonapi_response_for do |object, plural_form|
   match do |actual_response|
-    @instance = BeJsonApiResponseFor.new(object)
+    @instance = BeJsonApiResponseFor.new(object, plural_form)
 
     def failure_message
       @instance.failure_message
