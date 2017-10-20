@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    jsonapi_rspec (0.1.0)
+    jsonapi_rspec (0.2.0)
       activesupport (>= 4.2.8)
 
 GEM
