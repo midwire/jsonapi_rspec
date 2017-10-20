@@ -86,6 +86,7 @@ It currently tests for compliant json:api sections and matching attributes for t
 * Data type mismatch - 'data:type' doesn't match the object type
 * Object ID mismatch - 'data:id' doesn't match the object ID
 * Missing meta - if configured (see Configuration below) reports missing 'meta' section
+* Validates data attributes - checks for matching data attributes including their variable types. For example if an Integer is expected, a String fails.
 
 ### Possible Failure Messages
 
