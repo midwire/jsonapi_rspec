@@ -30,4 +30,23 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  # Shorten the standard RSpec expectation failure exception
+  ExpectationNotMetError = RSpec::Expectations::ExpectationNotMetError
+
+  # Make meta not-required by default for the tests, otherwise it may get
+  # set to true and remain that way for another test.
+  config.before(:each) do
+    JsonapiRspec.configure do |c|
+      c.meta_required = false
+    end
+  end
+
+  # Build a response using the passed fixture name
+  def response_with(fixture_name)
+    json = File.read(JsonapiRspec.root.join('spec', 'fixtures', "#{fixture_name}_response.json"))
+    res = Rack::Response.new
+    res.body = json
+    res
+  end
 end

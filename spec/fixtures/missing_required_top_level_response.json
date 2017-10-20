@@ -1,0 +1,17 @@
+{
+  "jsonapi": "version 1.1",
+  "not_required":{
+    "id":"123",
+    "type":"tags",
+    "attributes":{
+      "string_attribute":"Category"
+    }
+  },
+  "included": [{
+    "type": "users"
+  }],
+  "something_else":{
+    "copyright":"Copyright 2017 Chris Blackburn",
+    "version":"v1"
+  }
+}

@@ -2,8 +2,6 @@ require 'spec_helper'
 require 'json'
 
 RSpec.describe 'be_jsonapi_response_for' do
-  ExpectationNotMetError = RSpec::Expectations::ExpectationNotMetError
-
   let(:empty_response) do
     res = Rack::Response.new
     res.body = ''
@@ -18,34 +16,38 @@ RSpec.describe 'be_jsonapi_response_for' do
     response_with('error')
   end
 
-  context 'invalid response' do
+  context 'empty response' do
     it 'fails with empty string message' do
       expect do
         expect(empty_response).to be_jsonapi_response_for(Tag.new)
-      end.to raise_error(ExpectationNotMetError, /empty string/)
+      end.to raise_error(ExpectationNotMetError, /#{FailureMessages::EMPTY}/)
     end
+  end
 
+  context 'invalid response' do
     context 'data section' do
       it 'fails with invalid data section message' do
         response = response_with('tag_invalid_data')
         expect do
           expect(response).to be_jsonapi_response_for(Tag.new)
-        end.to raise_error(ExpectationNotMetError, /'data' section/)
+        end.to raise_error(ExpectationNotMetError, /#{FailureMessages::INVALID_DATA_SECTION}/)
       end
     end
 
     context 'data:type section' do
       it 'fails with invalid type section message' do
+        expected_message = format(FailureMessages::DATA_TYPE_MISMATCH, 'tags', 'not-tags')
         expect do
           expect(response_with('tag_success')).to be_jsonapi_response_for(NotTag.new)
-        end.to raise_error(ExpectationNotMetError, /data:type/)
+        end.to raise_error(ExpectationNotMetError, /#{expected_message}/)
       end
 
       context 'pluralization' do
         it 'fails on pizzaria without a plural_form given' do
+          expected_message = format(FailureMessages::DATA_TYPE_MISMATCH, 'pizzarias', 'pizzaria')
           expect do
             expect(response_with('pizzaria_success')).to be_jsonapi_response_for(Pizzaria.new)
-          end.to raise_error(ExpectationNotMetError, /data:type/)
+          end.to raise_error(ExpectationNotMetError, /#{expected_message}/)
         end
 
         it 'uses the passed plural_form if given' do
@@ -61,21 +63,21 @@ RSpec.describe 'be_jsonapi_response_for' do
         tag = Tag.new(string_attribute: 13)
         expect do
           expect(success_response).to be_jsonapi_response_for(tag)
-        end.to raise_error(ExpectationNotMetError, /does not match/)
+        end.to raise_error(ExpectationNotMetError, /does not match object/)
       end
 
       it 'fails with an invalid data type for Fixnum' do
         tag = Tag.new(fixnum_attribute: '11')
         expect do
           expect(success_response).to be_jsonapi_response_for(tag)
-        end.to raise_error(ExpectationNotMetError, /does not match/)
+        end.to raise_error(ExpectationNotMetError, /does not match object/)
       end
 
       it 'fails with incorrect data value' do
         tag = Tag.new(string_attribute: 'Something Else')
         expect do
           expect(success_response).to be_jsonapi_response_for(tag)
-        end.to raise_error(ExpectationNotMetError, /does not match/)
+        end.to raise_error(ExpectationNotMetError, /does not match object/)
       end
     end
 
@@ -86,33 +88,20 @@ RSpec.describe 'be_jsonapi_response_for' do
         end
       end
 
-      it 'fails when meta section is messing' do
+      it 'fails when meta section is missing' do
         response = response_with('meta_missing')
         expect do
           expect(response).to be_jsonapi_response_for(Tag.new)
-        end.to raise_error(ExpectationNotMetError, /'meta' section is missing/)
-      end
-
-      it 'fails when meta:version is missing' do
-        response = response_with('meta_missing_version')
-        expect do
-          expect(response).to be_jsonapi_response_for(Tag.new)
-        end.to raise_error(ExpectationNotMetError, /'meta:version' is missing/)
-      end
-
-      it 'fails when meta:copyright is missing' do
-        response = response_with('meta_missing_copyright')
-        expect do
-          expect(response).to be_jsonapi_response_for(Tag.new)
-        end.to raise_error(ExpectationNotMetError, /'meta:copyright' is missing/)
+        end.to raise_error(ExpectationNotMetError, /#{FailureMessages::MISSING_META}/)
       end
     end
 
     it 'fails with unexpected root key' do
       response = response_with('unexpected_key')
+      expected_msg = format(FailureMessages::UNEXPECTED_TOP_LVL_KEY, 'alpha')
       expect do
         expect(response).to be_jsonapi_response_for(Tag.new)
-      end.to raise_error(ExpectationNotMetError, /Unexpected key/i)
+      end.to raise_error(ExpectationNotMetError, /#{expected_msg}/)
     end
   end
 
@@ -120,7 +109,7 @@ RSpec.describe 'be_jsonapi_response_for' do
     it 'fails with message' do
       expect do
         expect(error_response).to be_jsonapi_response_for(Tag.new)
-      end.to raise_error(ExpectationNotMetError, /Response is an error/)
+      end.to raise_error(ExpectationNotMetError, /#{FailureMessages::ERROR}/)
     end
   end
 
@@ -130,14 +119,5 @@ RSpec.describe 'be_jsonapi_response_for' do
         expect(success_response).to be_jsonapi_response_for(Tag.new)
       end.to_not raise_error
     end
-  end
-
-  private
-
-  def response_with(fixture_name)
-    json = File.read(JsonapiRspec.root.join('spec', 'fixtures', "#{fixture_name}_response.json"))
-    res = Rack::Response.new
-    res.body = json
-    res
   end
 end
