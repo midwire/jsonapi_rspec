@@ -1,5 +1,7 @@
-require_relative 'string'
+require 'rspec/matchers'
 require 'active_support/all'
+
+require_relative 'string'
 
 # Class BeJsonApiResponseFor provides custom RSpec matching for json:api
 # responses for a given object instance. It checks attributes and elements
