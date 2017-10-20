@@ -33,14 +33,14 @@ get :show, params: { id: my_model.id }
 expect(response).to be_jsonapi_response_for(my_model)
 ```
 
-It currently tests for required json:api sections and matching attributes for the passed model instance.
+It currently tests for compliant json:api sections and matching attributes for the passed model instance.
 ```
 {
-  "jsonapi": "version 1.1",   // does not check
-  "data":{                    // checks if exists and is a hash
-    "id":"123",               // checks if this matches the object.id
-    "type":"tags",     // checks if exists and is the matching type for object
-    "attributes":{     // checks each attrib. against object attributes
+  "jsonapi": "version 1.1", // does not check
+  "data":{                  // checks if exists and is a hash
+    "id":"123",             // checks if this matches the object.id
+    "type":"tags",          // checks if exists and is the matching type for object
+    "attributes":{          // checks each attr. against object attributes
       "string_attribute":"Category",
       "datetime_attribute":"2017-10-13T19:33:54+00:00",
       "time_attribute":"2017-10-14 17:12:45 -0500",
@@ -50,12 +50,12 @@ It currently tests for required json:api sections and matching attributes for th
       "fixnum_attribute":11,
       "float_attribute":11.11,
       "bignum_attribute":9999999999999999999999999999999,
-      "links":{                // does not check
+      "links":{             // does not check
         "self":"http://test.host/api/v1/tag_types.123"
       }
     }
   },
-  "included": [{               // does not check
+  "included": [{            // does not check
     "type": "users",
     "id": 9,
     "attributes": {
@@ -67,26 +67,29 @@ It currently tests for required json:api sections and matching attributes for th
       "self": "http://example.com/users/9"
     }
   }],
-  "meta":{  // does not check for existance by default
-    "copyright":"Copyright 2017 Chris Blackburn", // required if meta tag exists
-    "version":"v1"  // required if meta tag exists
+  "meta":{                  // checks are configurable
+    "copyright":"Copyright 2017 Chris Blackburn",
+    "version":"v1"
   }
 }
 ```
 
+### Checks
+
+* Empty response - `response.empty?`
+* Nil response - `response.nil?`
+* Error response - catches if the response is an error when expecting a matching object response.
+* Missing a required top level section - must include 'data', 'errors' or 'meta'
+* Conflicting top level section - 'included' is invalid without a 'data' section
+* Unexpected top level key - catches invalid top level keys
+* Invalid data section - 'data' section must be an Array (collection) or Hash (single-object)
+* Data type mismatch - 'data:type' doesn't match the object type
+* Object ID mismatch - 'data:id' doesn't match the object ID
+* Missing meta - if configured (see Configuration below) reports missing 'meta' section
+
 ### Possible Failure Messages
 
-* "Attribute: :#{attr_name} with a value of '#{json_val}'(#{json_val.class.name}) does not match object: '#{obj_val}'(#{obj_val.class.name})
-* "Expected '#{value}' to match object id: '#{object_id}'"
-* "Expected data:type '#{data_type}' to match: '#{object_type}'"
-* "Fix 'match_attribute?' method to handle: '#{obj_val_class_name}'" - [please file an issue](https://github.com/midwire/jsonapi_rspec/issues/new) if you get this one.
-* "The 'data' section is missing or invalid"
-* "The 'meta' section is missing or invalid"
-* "The 'meta:copyright' is missing or invalid - regex: '/^Copyright.+\\d{4}/'"
-* "The 'meta:version' is missing"
-* "Unexpected key in response: '#{key}'"
-* 'Expected response to match an object instance but it is an empty string'
-* 'Response is an error'
+[See failure_messages.rb](https://github.com/midwire/jsonapi_rspec/blob/develop/lib/jsonapi_rspec/failure_messages.rb).
 
 [See the specs](https://github.com/midwire/jsonapi_rspec/blob/develop/spec/lib/jsonapi_rspec/be_json_api_response_for_spec.rb) for more details.
 
