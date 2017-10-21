@@ -1,3 +1,7 @@
+# Module FailureMessages provides a list of defined failure messages.
+#
+# @author Chris Blackburn <87a1779b@opayq.com>
+#
 module FailureMessages
   GENERAL_PREFIX = 'Expected a json:api compliant success response but'.freeze
   OBJECT_PREFIX = 'Expected a json:api response for an object instance but'.freeze

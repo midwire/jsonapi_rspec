@@ -18,11 +18,27 @@ require_relative 'string'
 class BeJsonApiResponseFor
   include JsonapiRspec
 
+  # Initialize an instance of the BeJsonApiResponseFor class
+  #
+  # @param [Object] object_instance Any instantiated object that responds to the
+  #   attribute-related method calls passed in by the json:api
+  # @param [String] plural_form Sometimes the ActiveSupport::Inflector has
+  #   problems with pluralizing certain strings. This allows setting of the
+  #   plural form directly. It should be the lowercase, dasherized plural form of the
+  #   passed object_instance.
+  #
   def initialize(object_instance, plural_form = nil)
     @object_instance = object_instance
     @plural_form = plural_form
   end
 
+  # Gets called by RSpec or by the camel_cased syntactical method below.
+  #
+  # @param [Rack::Response] response A type of Rack::Response or any object that
+  #   responds to the :body method.
+  #
+  # @return [Boolean] true if it matches, false if not
+  #
   def matches?(response)
     return false unless valid_response?(response)
 
@@ -67,6 +83,13 @@ class BeJsonApiResponseFor
     false
   end
 
+  # Check the json:api data:type against the plural form of the passed
+  # object instance.
+  #
+  # @param [String] data_type The json:api data:type.
+  #
+  # @return [Boolean] True if matches, false if not
+  #
   def valid_type?(data_type)
     object_type = @plural_form ||
                   @object_instance.class.name.pluralize.underscore.dasherize
@@ -78,6 +101,14 @@ class BeJsonApiResponseFor
     true
   end
 
+  # Match an object's attribute value to the json:api value
+  #
+  # @param [String] attr_name A String or Symbol of the object's attribute
+  # @param [String] json_val Typically a String but could be any value type
+  #   that is legal JSON
+  #
+  # @return [Boolean] true if the values match, false if not
+  #
   def match_attribute?(attr_name, json_val)
     obj_val = @object_instance.send(attr_name.to_sym)
     obj_val_class_name = obj_val.class.name
@@ -105,6 +136,12 @@ class BeJsonApiResponseFor
     true
   end
 
+  # Match the jsonapi values to the object instance.
+  #
+  # @param [Hash] values A Ruby Hash of parsed jsonapi values
+  #
+  # @return [Boolean] True if match, false if not.
+  #
   def match_object?(values)
     values.each do |key, value|
       case key.to_sym
@@ -134,6 +171,8 @@ class BeJsonApiResponseFor
   end
 end
 
+# This is the syntactic sugar matcher method.
+#
 # Usage:
 #   expect(response).to be_jsonapi_response_for(object_instance)
 #
