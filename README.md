@@ -28,9 +28,26 @@ And then execute:
 In your controller specs:
 
 ```ruby
-my_model = MyModel.create(...)
-get :show, params: { id: my_model.id }
-expect(response).to be_jsonapi_response_for(my_model)
+describe 'GET index' do
+  before do
+    get :index
+  end
+
+  it 'returns a json:api response' do
+    expect(response).to be_jsonapi_response
+  end
+end
+```
+
+```ruby
+describe 'POST create' do
+  context 'with valid content data' do
+    it 'responds with valid json' do
+      post :create, params: valid_params
+      expect(response).to be_jsonapi_response_for(Content.last)
+    end
+  end
+end
 ```
 
 It currently tests for compliant json:api sections and matching attributes for the passed model instance.
