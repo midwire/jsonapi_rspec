@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rspec/matchers'
 require 'active_support/all'
 
@@ -46,9 +48,8 @@ class BeJsonApiResponseFor
 
     return false if response_is_error?
     return false unless valid_data_section?
-    if JsonapiRspec.configuration.meta_required
-      return false unless valid_meta_section?
-    end
+
+    return false if JsonapiRspec.configuration.meta_required && !valid_meta_section?
 
     @parsed_response.each do |key, value|
       case key.to_sym
@@ -92,7 +93,7 @@ class BeJsonApiResponseFor
   #
   def valid_type?(data_type)
     object_type = @plural_form ||
-                  @object_instance.class.name.pluralize.underscore.dasherize
+        @object_instance.class.name.pluralize.underscore.dasherize
     unless data_type == object_type
       return set_failure_message(
         format(FailureMessages::DATA_TYPE_MISMATCH, data_type, object_type)
@@ -113,15 +114,15 @@ class BeJsonApiResponseFor
     obj_val = @object_instance.send(attr_name.to_sym)
     obj_val_class_name = obj_val.class.name
 
-    case obj_val_class_name
+    matched = case obj_val_class_name
     when 'Float'
-      matched = obj_val == json_val.to_f
+      obj_val == json_val.to_f
     when 'DateTime'
-      matched = obj_val.to_i == DateTime.parse(json_val).to_i
+      obj_val.to_i == DateTime.parse(json_val).to_i
     when 'Time'
-      matched = obj_val.to_i == Time.parse(json_val).to_i
+      obj_val.to_i == Time.parse(json_val).to_i
     else
-      matched = obj_val == json_val
+      obj_val == json_val
     end
 
     unless matched

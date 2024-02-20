@@ -1,5 +1,4 @@
-# rubocop:disable Style/SingleLineMethods
-# rubocop:disable Layout/EmptyLineBetweenDefs
+# frozen_string_literal: true
 
 # Class Tag provides a dummy class for use in comparing with jsonapi responses
 #
@@ -17,17 +16,17 @@ class Tag
     parsed.dig('data', 'attributes').each do |key, val|
       case key.to_sym
       when :string_attribute
-        send("#{key}=".to_sym, options.dig(key.to_sym) || val.to_s)
+        send(:"#{key}=", options[key.to_sym] || val.to_s)
       when :time_attribute
-        send("#{key}=".to_sym, options.dig(key.to_sym) || Time.parse(val))
+        send(:"#{key}=", options[key.to_sym] || Time.parse(val))
       when :datetime_attribute
-        send("#{key}=".to_sym, options.dig(key.to_sym) || DateTime.parse(val))
+        send(:"#{key}=", options[key.to_sym] || DateTime.parse(val))
       when :true_attribute, :false_attribute, :nil_attribute
-        send("#{key}=".to_sym, options.dig(key.to_sym) || val)
+        send(:"#{key}=", options[key.to_sym] || val)
       when :fixnum_attribute, :integer_attribute, :bignum_attribute
-        send("#{key}=".to_sym, options.dig(key.to_sym) || val.to_i)
+        send(:"#{key}=", options[key.to_sym] || val.to_i)
       when :float_attribute
-        send("#{key}=".to_sym, options.dig(key.to_sym) || val.to_f)
+        send(:"#{key}=", options[key.to_sym] || val.to_f)
       when :links
         next # ignore
       else
@@ -36,6 +35,3 @@ class Tag
     end
   end
 end
-
-# rubocop:enable Layout/EmptyLineBetweenDefs
-# rubocop:enable Style/SingleLineMethods

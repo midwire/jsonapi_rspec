@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'tag'
 
 # Class Pizzaria provides a dummy class for use in comparing with jsonapi

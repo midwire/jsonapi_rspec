@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'json'
 
@@ -53,7 +55,7 @@ RSpec.describe 'be_jsonapi_response_for' do
         it 'uses the passed plural_form if given' do
           expect do
             expect(response_with('pizzaria_success')).to be_jsonapi_response_for(Pizzaria.new, 'pizzarias')
-          end.to_not raise_error
+          end.not_to raise_error
         end
       end
     end
@@ -117,7 +119,7 @@ RSpec.describe 'be_jsonapi_response_for' do
     it 'match without error' do
       expect do
         expect(success_response).to be_jsonapi_response_for(Tag.new)
-      end.to_not raise_error
+      end.not_to raise_error
     end
   end
 end

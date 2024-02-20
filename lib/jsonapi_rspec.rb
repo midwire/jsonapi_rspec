@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'jsonapi_rspec/version'
 require 'jsonapi_rspec/failure_messages'
 require 'jsonapi_rspec/be_json_api_response'
@@ -51,6 +53,7 @@ module JsonapiRspec
   def valid_response?(response)
     return set_failure_message(FailureMessages::EMPTY) if response.body == ''
     return set_failure_message(FailureMessages::NIL) if response.body.nil?
+
     true
   end
 
@@ -59,8 +62,9 @@ module JsonapiRspec
   # @return [Boolean] True if the required sections exist, false if not
   #
   def required_top_level_sections?
-    valid = @parsed_response.dig('data') || @parsed_response.dig('errors') || @parsed_response.dig('meta')
+    valid = @parsed_response['data'] || @parsed_response['errors'] || @parsed_response['meta']
     return set_failure_message(FailureMessages::MISSING_REQ_TOP_LVL) unless valid
+
     true
   end
 
@@ -70,12 +74,10 @@ module JsonapiRspec
   #
   def conflicting_sections?
     conflicting = false
-    if @parsed_response.dig('included')
-      # must have a data section
-      if @parsed_response.dig('data').nil?
-        conflicting = true
-        set_failure_message(FailureMessages::CONFLICTING_TOP_LVL)
-      end
+    # must have a data section
+    if @parsed_response['included'] && @parsed_response['data'].nil?
+      conflicting = true
+      set_failure_message(FailureMessages::CONFLICTING_TOP_LVL)
     end
     conflicting
   end
@@ -85,8 +87,9 @@ module JsonapiRspec
   # @return [Boolean] True if the meta section exists and is a Hash, false if not
   #
   def valid_meta_section?
-    meta = @parsed_response.dig('meta')
+    meta = @parsed_response['meta']
     return set_failure_message(FailureMessages::MISSING_META) unless meta.is_a?(Hash)
+
     true
   end
 
@@ -95,7 +98,7 @@ module JsonapiRspec
   # @return [Boolean] True if the response is an error response, false if not
   #
   def response_is_error?
-    is_error = !@parsed_response.dig('errors').nil?
+    is_error = !@parsed_response['errors'].nil?
     set_failure_message(FailureMessages::ERROR) if is_error
     is_error
   end
@@ -105,11 +108,10 @@ module JsonapiRspec
   # @return [Boolean] True if the section exists and is value, false if not.
   #
   def valid_data_section?
-    data_section = @parsed_response.dig('data')
+    data_section = @parsed_response['data']
     valid = data_section.is_a?(Hash) || data_section.is_a?(Array)
-    unless valid
-      return set_failure_message(FailureMessages::INVALID_DATA_SECTION)
-    end
+    return set_failure_message(FailureMessages::INVALID_DATA_SECTION) unless valid
+
     true
   end
 

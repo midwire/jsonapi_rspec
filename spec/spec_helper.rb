@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 if ENV['COVERAGE']
   require 'simplecov'
   SimpleCov.start do
@@ -36,7 +38,7 @@ RSpec.configure do |config|
 
   # Make meta not-required by default for the tests, otherwise it may get
   # set to true and remain that way for another test.
-  config.before(:each) do
+  config.before do
     JsonapiRspec.configure do |c|
       c.meta_required = false
     end

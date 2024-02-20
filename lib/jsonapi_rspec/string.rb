@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class String
   # Helper for the heredoc functionality. Allows pipe '|' delimeted heredocs
   # with a parameterized delimeter.

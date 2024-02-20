@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rspec/matchers'
 
 require_relative 'string'
@@ -24,9 +26,7 @@ class BeJsonApiResponse
     return false unless required_top_level_sections?
     return false if conflicting_sections?
 
-    if JsonapiRspec.configuration.meta_required
-      return false unless valid_meta_section?
-    end
+    return false if JsonapiRspec.configuration.meta_required && !valid_meta_section?
 
     @parsed_response.each_key do |key|
       case key.to_sym
