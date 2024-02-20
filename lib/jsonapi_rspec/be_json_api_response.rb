@@ -41,7 +41,7 @@ class BeJsonApiResponse
       when :links
         next # TODO: handle links objects
       else
-        return set_failure_message(FailureMessages::UNEXPECTED_TOP_LVL_KEY % key)
+        return failure_message(FailureMessages::UNEXPECTED_TOP_LVL_KEY % key)
       end
     end
 
@@ -56,7 +56,7 @@ class BeJsonApiResponse
   #
   # @return [Boolean] always returns false
   #
-  def set_failure_message(msg)
+  def failure_message(msg)
     @failure_message = "#{FailureMessages::GENERAL_PREFIX} #{msg}"
     false
   end

@@ -64,7 +64,7 @@ class BeJsonApiResponseFor
       when :links
         next # TODO: handle links objects
       else
-        return set_failure_message(FailureMessages::UNEXPECTED_TOP_LVL_KEY % key)
+        return failure_message(FailureMessages::UNEXPECTED_TOP_LVL_KEY % key)
       end
     end
 
@@ -79,7 +79,7 @@ class BeJsonApiResponseFor
   #
   # @return [Boolean] always returns false
   #
-  def set_failure_message(msg)
+  def failure_message(msg)
     @failure_message = "#{FailureMessages::OBJECT_PREFIX} #{msg}"
     false
   end
@@ -95,7 +95,7 @@ class BeJsonApiResponseFor
     object_type = @plural_form ||
         @object_instance.class.name.pluralize.underscore.dasherize
     unless data_type == object_type
-      return set_failure_message(
+      return failure_message(
         format(FailureMessages::DATA_TYPE_MISMATCH, data_type, object_type)
       )
     end
@@ -126,7 +126,7 @@ class BeJsonApiResponseFor
     end
 
     unless matched
-      return set_failure_message(
+      return failure_message(
         <<-STRING.here_with_pipe!(' ')
           |Attribute: :#{attr_name}
           |with a value of '#{json_val}'(#{json_val.class.name})
@@ -149,7 +149,7 @@ class BeJsonApiResponseFor
       when :id
         object_id = @object_instance.send(key)
         unless object_id == value.to_i
-          return set_failure_message(
+          return failure_message(
             format(FailureMessages::OBJECT_ID_MISMATCH, value, object_id)
           )
         end
